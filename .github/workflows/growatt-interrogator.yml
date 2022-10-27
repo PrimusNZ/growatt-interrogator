@@ -57,4 +57,4 @@ jobs:
           args: |
             --all \
             --target . \
-            --docker-hub ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+            --docker-hub ghcr.io/primusnz/haddio-addons/${{ env.IMAGE_NAME }}
