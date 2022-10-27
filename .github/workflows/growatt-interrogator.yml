@@ -56,5 +56,4 @@ jobs:
         with:
           args: |
             --all \
-            --target growatt-interrogator \
             --docker-hub ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
