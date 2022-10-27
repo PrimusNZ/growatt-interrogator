@@ -56,4 +56,5 @@ jobs:
         with:
           args: |
             --all \
+            --target . \
             --docker-hub ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
