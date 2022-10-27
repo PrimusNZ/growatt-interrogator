@@ -56,4 +56,4 @@ jobs:
           args: |
             --all \
             --target . \
-            --docker-hub hassio-addons/${{ env.IMAGE_NAME }}
+            --docker-hub ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
