@@ -82,11 +82,11 @@ def inverter_read():
 
     state = holding_registers.registers[8]
     if state == 0:
-        data['ac_input_mode'] = "Appliance"
+      data['ac_input_mode'] = "Appliance"
     elif state == 1:
-        data['ac_Input_mode'] = "UPS"
+      data['ac_input_mode'] = "UPS"
     elif state == 3:
-        data['ac_Input_mode'] = "Generator"
+      data['ac_input_mode'] = "Generator"
 
     state = holding_registers.registers[34]
     data['max_charge_current'] = state
@@ -96,15 +96,15 @@ def inverter_read():
 
     state = holding_registers.registers[39]
     if state == 0:
-        data['battery_type'] = "AGM"
+      data['batt_type'] = "AGM"
     elif state == 1:
-        data['battery_type'] = "Flooded"
+      data['batt_type'] = "Flooded"
     elif state == 2:
-        data['battery_typee'] = "User Defined"
+      data['batt_type'] = "User Defined"
     elif state == 3:
-        data['battery_typee'] = "Lithium"
+      data['batt_type'] = "Lithium"
     elif state == 4:
-        data['battery_typee'] = "User Defined 2"
+      data['batt_type'] = "User Defined 2"
 
     value=int(input_registers.registers[0])
     status="Standby"
