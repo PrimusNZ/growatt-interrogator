@@ -69,8 +69,8 @@ def inverter_read():
       data['state_power'] = "Solar First"
     elif state == 2:
       data['state_power'] = "Grid First"
-    elif state == 3:
-      data['state_power'] = "Solar and Grid First"
+#    elif state == 3:
+#      data['state_power'] = "Solar and Grid First"
 
     state = holding_registers.registers[2]
     if state == 0:
