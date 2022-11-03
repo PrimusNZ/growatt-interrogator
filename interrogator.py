@@ -72,7 +72,6 @@ def inverter_read():
     elif state == 3:
       data['state_power'] = "Solar and Grid First"
 
-#    holding_registers = Inverter.read_holding_registers(2,1)
     state = holding_registers.registers[2]
     if state == 0:
       data['state_charge'] = "Solar First"
@@ -80,6 +79,32 @@ def inverter_read():
       data['state_charge'] = "Solar and Grid"
     elif state == 2:
       data['state_charge'] = "Solar Only"
+
+    state = holding_registers.registers[8]
+    if state == 0:
+        data['ac_input_mode'] = "Appliance"
+    elif state == 1:
+        data['ac_Input_mode'] = "UPS"
+    elif state == 3:
+        data['ac_Input_mode'] = "Generator"
+
+    state = holding_registers.registers[34]
+    data['max_charge_current'] = state
+
+    state = holding_registers.registers[38]
+    data['max_ac_charge_current'] = state
+
+    state = holding_registers.registers[39]
+    if state == 0:
+        data['battery_type'] = "AGM"
+    elif state == 1:
+        data['battery_type'] = "Flooded"
+    elif state == 2:
+        data['battery_typee'] = "User Defined"
+    elif state == 3:
+        data['battery_typee'] = "Lithium"
+    elif state == 4:
+        data['battery_typee'] = "User Defined 2"
 
     value=int(input_registers.registers[0])
     status="Standby"
