@@ -1,0 +1,173 @@
+registers:
+  holding:
+    1:
+      name: State Power
+      states:
+        0: Battery First
+        1: Solar First
+        2: Grid First
+    2:
+      name: State Charge
+      states:
+        0: Solar First
+        1: Solar and Grid
+        2: Solar Only
+    8:
+      name: AC Input Mode
+      states:
+        0: Appliance
+        1: UPS
+        2: Generator
+    34:
+      name: Max Charge Current
+    38:
+      name: Max AC Charge Current
+    39:
+      name: Battery Type
+      states:
+        0: AGM
+        1: Flooded
+        2: User Defined
+        3: Lithium
+        4: User Defined 2
+
+  input:
+    0:
+      name: Inverter Status
+      states:
+        0: Standby
+        1: Unknown
+        2: Discharge
+        3: Fault
+        4: Flash
+        5: PV Charge
+        6: AC Charge
+        7: Combine Charge
+        8: Combine Charge and Bypass
+        9: PV Charge and Bypass
+        10: AC Charge and Bypass
+        11: Bypass
+        12: PV Charge and Discharge
+    1:
+      name: PV Volts
+      type: float
+      math: a/10
+    4:
+      name: PV Power
+      type: int
+      math: a/10
+    10:
+      name: Consumption
+      type: int
+      math: a/10
+    12:
+      name: Inverter Voltamps
+      type: float
+      math: a/1000
+    14:
+      name: AC Power
+      type: int
+      math: a/10
+      add: 70
+    17:
+      name: Battery Volts
+      type: float
+      math: a/100
+    18:
+      name: Battery State Of Charge
+      type: int
+    19:
+      name: Charge Volts
+      type: float
+      math: a/100
+    20:
+      name: Grid Volts
+      type: float
+      math: a/10
+    21:
+      name: Grid Frequency
+      type: float
+      math: a/100
+    22:
+      name: Inverter Volts
+      type: float
+      math: a/10
+    23:
+      name: Inverter Frequency
+      type: float
+      math: a/100
+    25:
+      name: Inverter Temp
+      type: int
+      math: a/10
+    26:
+      name: DCDC Temp
+      type: int
+      math: a/10
+    27:
+      name: Inverter Load
+      type: float
+      math: a/10
+    51:
+      name: Solar History Total
+      type: int
+      math: a*100
+    59:
+      name: Charge History Total
+      type: int
+      math: a*100
+      add: 51
+    61:
+      name: Battery Consumption Today
+      type: float
+      math: a/10
+      round: 0
+    63:
+      name: Battery History Total
+      type: int
+      math: a*100
+    67:
+      name: AC History Total
+      type: int
+      math: a*100
+      add: 59
+    74:
+      name: Battery Consumption
+      type: float
+      math: a/10
+      round: 0
+    82:
+      name: Inverter Fan Speed
+      type: int
+    83:
+      name: Charge Current
+      type: float
+      math: a/10
+      round: 0
+
+transform:
+  Grid Connected:
+    condition: a>=100
+    sources:
+      - Grid Volts
+  Charge Power:
+    round: 0
+    math: a*b
+    sources:
+      - Charge Current
+      - Charge Volts
+  Battery Power:
+    math: a-b
+    sources:
+      - Battery Consumption
+      - Charge Power
+  Consumption Total:
+    math: a+b
+    sources:
+      - AC History Total
+      - Battery History Total
+  Consumption Combined:
+    math: a+b
+    sources:
+      - Consumption
+      - Charge Power

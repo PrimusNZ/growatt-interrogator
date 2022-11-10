@@ -12,11 +12,12 @@ from paho.mqtt import client as mqtt_client
 import random
 import requests
 import sys
+from GrowattMap import GrowattMap
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
 # read settings from config file
-config = ConfigObj("/tmp/pvinverter.cfg")
+config = ConfigObj("/etc/growatt/pvinverter.cfg")
 InverterPort = config['Inverter']
 MqttBroker = config['MQTTBroker']
 MqttPort = int(config['MQTTPort'])
@@ -30,6 +31,8 @@ APIKey = config['APIKey']
 
 Verbose = config['Verbose']
 
+Mapfile = config['Mapfile']
+
 
 # Static settings
 MqttStub = "Growatt"
@@ -37,6 +40,7 @@ MqttTopicPower = "power_mode"
 MqttTopicCharge = "charge_mode"
 ReadRegisters = 101
 client_id = f'inverter-stats-{random.randint(0, 1000)}'
+gMap = GrowattMap(Mapfile)
 
 try:
     Inverter = ModbusClient(method='rtu', port=InverterPort, baudrate=9600, stopbits=1, parity='N', bytesize=8, timeout=1)
@@ -55,167 +59,15 @@ except:
     sys.exit()
 
 def inverter_read():
-  data = dict()
-
   try:
     # Sending Current State
-    holding_registers = Inverter.read_holding_registers(0,100)
+    holding_registers = Inverter.read_holding_registers(0,ReadRegisters)
+    gMap.parse('holding', holding_registers.registers)
+
     input_registers = Inverter.read_input_registers(0,ReadRegisters)
+    gMap.parse('input', input_registers.registers)
 
-    state = holding_registers.registers[1]
-    if state == 0:
-      data['state_power'] = "Battery First"
-    elif state == 1:
-      data['state_power'] = "Solar First"
-    elif state == 2:
-      data['state_power'] = "Grid First"
-#    elif state == 3:
-#      data['state_power'] = "Solar and Grid First"
-
-    state = holding_registers.registers[2]
-    if state == 0:
-      data['state_charge'] = "Solar First"
-    elif state == 1:
-      data['state_charge'] = "Solar and Grid"
-    elif state == 2:
-      data['state_charge'] = "Solar Only"
-
-    state = holding_registers.registers[8]
-    if state == 0:
-      data['ac_input_mode'] = "Appliance"
-    elif state == 1:
-      data['ac_input_mode'] = "UPS"
-    elif state == 3:
-      data['ac_input_mode'] = "Generator"
-
-    state = holding_registers.registers[34]
-    data['max_charge_current'] = state
-
-    state = holding_registers.registers[38]
-    data['max_ac_charge_current'] = state
-
-    state = holding_registers.registers[39]
-    if state == 0:
-      data['batt_type'] = "AGM"
-    elif state == 1:
-      data['batt_type'] = "Flooded"
-    elif state == 2:
-      data['batt_type'] = "User Defined"
-    elif state == 3:
-      data['batt_type'] = "Lithium"
-    elif state == 4:
-      data['batt_type'] = "User Defined 2"
-
-    value=int(input_registers.registers[0])
-    status="Standby"
-    if value==0:
-        status="Standby"
-    elif value==1:
-        status="Unknown"
-    elif value==2:
-        status="Discharge"
-    elif value==3:
-        status="Fault"
-    elif value==4:
-        status="Flash"
-    elif value==5:
-        status="PV Charge"
-    elif value==6:
-        status="AC Charge"
-    elif value==7:
-        status="Combine Charge"
-    elif value==8:
-        status="Combine Charge and Bypass"
-    elif value==9:
-        status="PV Charge and Bypass"
-    elif value==10:
-        status="AC Charge and Bypass"
-    elif value==11:
-        status="Bypass"
-    elif value==12:
-        status="PV Charge and Discharge"
-    else:
-        status="ERROR"
-
-    data['inverter_status']=status
-
-    value=input_registers.registers[1]
-    data["pv_volts"]=float(value)/10
-
-    value=input_registers.registers[4]
-    data["pv_power"]=int(value)/10
-
-    value=input_registers.registers[10]
-    data["consumption"]=int(value)/10
-
-    value=input_registers.registers[12]
-    data["inverter_voltamps"]=float(value)/1000
-
-    value=int(input_registers.registers[14])+int(input_registers.registers[70])
-    data["ac_power"]=int(value)/10
-
-    value=input_registers.registers[17]
-    data['batt_volts']=float(value)/100
-
-    value=input_registers.registers[18]
-    data['batt_soc']=int(value)
-
-    value=input_registers.registers[20]
-    data["grid_volts"]=float(value)/10
-
-    value=input_registers.registers[21]
-    data["grid_frequency"]=float(value)/100
-
-    if data["grid_volts"] >= 100:
-        data['grid_connected']="true"
-    else:
-        data['grid_connected']="false"
-
-    value=input_registers.registers[22]
-    data["inverter_volts"]=float(value)/10
-
-    value=input_registers.registers[23]
-    data["inverter_frequency"]=float(value)/100
-
-    value=input_registers.registers[27]
-    data["inverter_load"]=float(value)/10
-
-    value=input_registers.registers[51]
-    data["solar_hist_total"]=value*100
-
-    value=input_registers.registers[63]
-    data["batt_hist_total"]=value*100
-
-    value=input_registers.registers[67]+input_registers.registers[59]
-    data["ac_hist_total"]=value*100
-
-    value=input_registers.registers[51]+input_registers.registers[59]
-    data["charge_hist_total"]=value*100
-
-    value=input_registers.registers[74]
-    data["batt_consumption"]=round(float(value)/10,0)
-
-    value=input_registers.registers[61]
-    data["batt_consumption_today"]=round(float(value)/10,0)
-
-    value=input_registers.registers[83]
-    data["charge_current"]=round(float(value)/10,0)
-
-    value=input_registers.registers[19]
-    data["charge_volts"]=float(value)/100
-
-    data["charge_power"]=round(data["charge_current"] * data["charge_volts"],0)
-
-    data["batt_power"]=data["batt_consumption"] - data["charge_power"]
-
-    data["inverter_fan_speed"]=input_registers.registers[82]
-
-    data["inverter_temp"]=input_registers.registers[25]/10
-    data["dcdc_temp"]=input_registers.registers[26]/10
-
-    data["consumption_total"] = data["ac_hist_total"]+data["batt_hist_total"]
-    data["consumption_combined"] = data["consumption"]+data["charge_power"]
-
+    data = gMap.finalise()
   except:
     print("Exception while retrieving state")
 

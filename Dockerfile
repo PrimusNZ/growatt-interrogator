@@ -14,6 +14,10 @@ RUN rm -rf /var/lib/apt/lists/*
 COPY run.sh /
 COPY *.py /
 
+RUN mkdir -p /etc/growatt/maps
+
+COPY maps/*.yaml /etc/growatt/maps/
+
 RUN chmod a+x /run.sh
 
 CMD [ "/run.sh" ]
