@@ -17,8 +17,7 @@ options:
   inverter_port: /dev/ttyUSB0
   pvoutput_enabled: false
   verbose: false
-  mapfile:
-    - default
+  mapfile: default
 
 schema:
   inverter_port: str
@@ -26,7 +25,7 @@ schema:
   pvoutput_systemid: str?
   pvoutput_apikey: str?
   verbose: bool
-  mapfile: list
+  mapfile: list(default)
 
 uart: true
 services:
