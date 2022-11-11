@@ -127,6 +127,9 @@ class GrowattMap:
         if "state_class" in definition:
             payload["state_class"] = definition["state_class"]
 
+        if "icon" in definition:
+            payload["icon"] = definition["icon"]
+
         return {topic:payload}
 
     def discover(self):

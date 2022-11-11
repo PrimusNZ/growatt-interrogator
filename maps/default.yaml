@@ -233,6 +233,7 @@ transform:
     payload_on: "ON"
     payload_off: "OFF"
     type: binary_sensor
+    icon: mdi:transmission-tower
   Charge Power:
     round: 0
     math: a*b
