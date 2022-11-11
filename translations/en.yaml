@@ -14,3 +14,6 @@ configuration:
   pvoutput_apikey:
     name: PVOutput API Key
     description: API Key obtained from PVOutput to authenticate power statistic uploading.
+  mapfile:
+    name: Inverter Map
+    description: Map file to use to accurately report firmware values

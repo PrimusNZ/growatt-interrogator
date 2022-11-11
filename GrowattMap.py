@@ -78,9 +78,9 @@ class GrowattMap:
         if "condition" in def_keys:
             condition=transform["condition"].replace("a","%s" %(values[0]))
             if eval(condition):
-                value="true"
+                value="ON"
             else:
-                value="false"
+                value="OFF"
 
         if "math" in def_keys:
             replacements = len(values)
