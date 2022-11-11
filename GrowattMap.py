@@ -5,7 +5,6 @@ class GrowattMap:
     def __init__(self,mapFile):
         self.return_keys = {}
         mapPath = "/etc/growatt/maps/%s.yaml" %(mapFile)
-        print(mapPath)
         with open(mapPath, 'r') as f:
             self.growattMap = yaml.load(f, Loader=yaml.FullLoader)
 
@@ -13,9 +12,8 @@ class GrowattMap:
         self.registers = registers
         if (register_map in self.growattMap["registers"]):
             for key in self.growattMap["registers"][register_map].keys():
-                if key in registers:
-                    result = self.__calculate_key(key, self.growattMap["registers"][register_map][key])
-                    self.return_keys = {**self.return_keys, **result}
+                result = self.__calculate_key(key, self.growattMap["registers"][register_map][key])
+                self.return_keys = {**self.return_keys, **result}
 
     def finalise(self):
         if "transform" in self.growattMap.keys():
