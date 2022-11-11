@@ -103,6 +103,7 @@ def connect_mqtt():
                     del payload[1]["__subscribe"]
                     topic = ('%s/%s' %(MqttStub, payload[1]["command_topic"]))
                     client.subscribe(topic, qos=0)
+                    print("Listening for cmnd changes on '%s'" %(topic))
                 payload[1]["state_topic"]="%s/%s" %(MqttStub, payload[1]["state_topic"])
                 client.publish(payload[0], json.dumps(payload[1], indent = 4),0,True)
 
@@ -166,11 +167,9 @@ def publish(client,stub,data):
 def run():
     print("Growatt Interrogator Starting")
     print("Verbose: %s" %(Verbose.lower()))
-    client = connect_mqtt()
     print("Using serial port: %s" %(InverterPort))
     print("Publishing states to '%s/'" %(MqttStub))
-    print("Listening for charge modes on '%s/%s'" %(MqttStub, MqttTopicCharge))
-    print("Listening for power modes on '%s/%s'" %(MqttStub, MqttTopicPower))
+    client = connect_mqtt()
 
     scheduler = BackgroundScheduler()
     scheduler.add_job(send_mqtt, 'interval', seconds=1, args=[client])
