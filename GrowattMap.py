@@ -130,6 +130,14 @@ class GrowattMap:
         if "icon" in definition:
             payload["icon"] = definition["icon"]
 
+        if definition["type"]=="select":
+            states=[]
+            for state in definition["states"].items():
+                states.append(state[1])
+            payload["options"] = states
+            payload["command_topic"]="cmnd/%s" %(self.__convert_name(definition["name"]))
+            payload["__subscribe"]=True
+
         return {topic:payload}
 
     def discover(self):

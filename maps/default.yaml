@@ -6,14 +6,14 @@ registers:
         0: Battery First
         1: Solar First
         2: Grid First
-      type: sensor
+      type: select
     2:
       name: State Charge
       states:
         0: Solar First
         1: Solar and Grid
         2: Solar Only
-      type: sensor
+      type: select
     8:
       name: AC Input Mode
       states:

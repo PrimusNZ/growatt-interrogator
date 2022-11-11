@@ -37,8 +37,6 @@ Mapfile = config['Mapfile']
 
 # Static settings
 MqttStub = "Growatt"
-MqttTopicPower = "power_mode"
-MqttTopicCharge = "charge_mode"
 ReadRegisters = 101
 client_id = f'inverter-stats-{random.randint(0, 1000)}'
 gMap = GrowattMap(Mapfile)
@@ -98,14 +96,13 @@ def connect_mqtt():
     def on_connect(client, userdata, flags, rc):
         if rc == 0:
             print("Connected to MQTT Broker!")
-            topic1 = ('%s/%s' %(MqttStub, MqttTopicPower))
-            client.subscribe(topic1, qos=0)
-            topic2 = ('%s/%s' %(MqttStub, MqttTopicCharge))
-            client.subscribe(topic2, qos=0)
-
             # Discover to HA
             discovery_topics = gMap.discover()
             for payload in discovery_topics.items():
+                if "__subscribe" in payload[1].keys():
+                    del payload[1]["__subscribe"]
+                    topic = ('%s/%s' %(MqttStub, payload[1]["command_topic"]))
+                    client.subscribe(topic, qos=0)
                 payload[1]["state_topic"]="%s/%s" %(MqttStub, payload[1]["state_topic"])
                 client.publish(payload[0], json.dumps(payload[1], indent = 4),0,True)
 
@@ -130,6 +127,7 @@ def on_message(client,userdata,message):
         print("Received message: '%s' on '%s'" %(msg,topic))
 
     valid=False
+    """
     try:
 
         if topic == ('%s/%s' %(MqttStub, MqttTopicPower)):
@@ -157,6 +155,7 @@ def on_message(client,userdata,message):
                 publish(client, "state_charge", msg)
     except:
       print("Exception while changing state")
+    """
 
 def publish(client,stub,data):
     topic = ('%s/%s' %(MqttStub, stub))
