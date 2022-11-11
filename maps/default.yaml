@@ -230,8 +230,8 @@ transform:
     condition: a>=100
     sources:
       - Grid Volts
-    payload_on: ON
-    payload_off: OFF
+    payload_on: "ON"
+    payload_off: "OFF"
     type: binary_sensor
   Charge Power:
     round: 0
