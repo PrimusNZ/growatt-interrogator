@@ -110,6 +110,7 @@ class GrowattMap:
         topic = "homeassistant/%s/gwi_%s/config" %(definition["type"], self.__convert_name(definition["name"]))
         payload={
             "name": "Growatt %s" %(definition["name"]),
+            "unique_id": "gwi_%s" %s(self.__convert_name(definition["name"])),
             "state_topic": self.__convert_name(definition["name"])
         }
 
