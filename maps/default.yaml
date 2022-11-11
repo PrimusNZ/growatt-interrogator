@@ -7,6 +7,7 @@ registers:
         1: Solar First
         2: Grid First
       type: select
+      icon: mdi:power-settings
     2:
       name: State Charge
       states:
@@ -14,6 +15,7 @@ registers:
         1: Solar and Grid
         2: Solar Only
       type: select
+      icon: mdi:battery-charging-high
     8:
       name: AC Input Mode
       states:
@@ -21,6 +23,7 @@ registers:
         1: UPS
         2: Generator
       type: sensor
+      icon: mdi:engine
     34:
       name: Max Charge Current
       device_class: current
@@ -40,7 +43,7 @@ registers:
         3: Lithium
         4: User Defined 2
       type: sensor
-
+      icon: mdi:home-battery
   input:
     0:
       name: Inverter Status
@@ -59,6 +62,7 @@ registers:
         11: Bypass
         12: PV Charge and Discharge
       type: sensor
+      icon: mdi:information
     1:
       name: PV Volts
       type: float
@@ -163,6 +167,7 @@ registers:
       math: a/10
       unit_of_measurement: "%"
       type: sensor
+      icon: mdi:tray-arrow-up
     51:
       name: Solar History Total
       type: int
@@ -185,6 +190,8 @@ registers:
       type: float
       math: a/10
       round: 0
+      device_class: energy
+      unit_of_measurement: Wh
       type: sensor
     63:
       name: Battery History Total
@@ -216,6 +223,7 @@ registers:
       type: int
       unit_of_measurement: "%"
       type: sensor
+      icon: mdi:fan
     83:
       name: Charge Current
       type: float
