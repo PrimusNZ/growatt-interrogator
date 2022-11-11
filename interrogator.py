@@ -129,35 +129,16 @@ def on_message(client,userdata,message):
         print("Received message: '%s' on '%s'" %(msg,topic))
 
     valid=False
-    """
-    try:
 
-        if topic == ('%s/%s' %(MqttStub, MqttTopicPower)):
-            if msg == "Battery First":
-                set_register(1,0)
-                publish(client, "state_power", msg)
-            elif msg == "Solar First":
-                set_register(1,1)
-                publish(client, "state_power", msg)
-            elif msg == "Grid First":
-                set_register(1,2)
-                publish(client, "state_power", msg)
-            elif msg == "Solar and Grid First":
-                set_register(1,3)
-                publish(client, "state_power", msg)
-        if topic == ('%s/%s' %(MqttStub, MqttTopicCharge)):
-            if msg == "Solar First":
-                set_register(2,0)
-                publish(client, "state_charge", msg)
-            elif msg == "Solar and Grid":
-                set_register(2,1)
-                publish(client, "state_charge", msg)
-            elif msg == "Solar Only":
-                set_register(2,2)
-                publish(client, "state_charge", msg)
+    try:
+        MqttStub = "Growatt"
+        topic_stub = topic.replace("%s/cmnd/" %(MqttStub),"")
+        register = gMap.decode_mqtt(topic_stub, msg)
+        if register != False:
+            set_register(register[0],register[1])
+            publish(client, topic_stub, msg)
     except:
       print("Exception while changing state")
-    """
 
 def publish(client,stub,data):
     topic = ('%s/%s' %(MqttStub, stub))
@@ -188,7 +169,8 @@ def set_register(register,value):
         try:
             # Read data from inverter
             holding_registers = Inverter.read_holding_registers(register,1)
-            print ('%s -> %s' %(holding_registers.registers[0], value))
+            if Verbose.lower() == 'true':
+                print ('Register %s changed from %s to %s' %(register, holding_registers.registers[0], value))
             Inverter.write_registers(register,value)
 
         except:

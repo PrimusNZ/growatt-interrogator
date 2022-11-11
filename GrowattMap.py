@@ -165,3 +165,14 @@ class GrowattMap:
                 payloads = {**payloads, **payload}
 
         return payloads
+
+    def decode_mqtt(self, topic, cmnd):
+        name = topic.replace("_", " ")
+        for register in self.growattMap["registers"]['holding'].keys():
+            key = self.growattMap["registers"]['holding'][register]
+            if name == key['name'].lower():
+                states = key["states"]
+                for value in states:
+                    if cmnd.lower() == states[value].lower():
+                        return [register,value]
+        return False
