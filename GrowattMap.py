@@ -105,3 +105,51 @@ class GrowattMap:
 
     def __fetch_raw(self, key):
         return self.registers[key]
+
+    def __construct_payload(self, definition):
+        topic = "homeassistant/%s/gwi_%s/config" %(definition["type"], self.__convert_name(definition["name"]))
+        payload={
+            "name": "Growatt %s" %(definition["name"]),
+            "state_topic": self.__convert_name(definition["name"])
+        }
+
+        if "device_class" in definition:
+            payload["device_class"] = definition["device_class"]
+
+        if "unit_of_measurement" in definition:
+            payload["unit_of_measurement"] = definition["unit_of_measurement"]
+
+        if "payload_on" in definition:
+            payload["payload_on"] = definition["payload_on"]
+        if "payload_off" in definition:
+            payload["payload_off"] = definition["payload_off"]
+
+        if "state_class" in definition:
+            payload["state_class"] = definition["state_class"]
+
+        return {topic:payload}
+
+    def discover(self):
+        payloads={}
+        if "input" in self.growattMap["registers"]:
+            for key in self.growattMap["registers"]["holding"]:
+                definition = self.growattMap["registers"]["holding"][key]
+                payload = self.__construct_payload(definition)
+                payloads = {**payloads, **payload}
+
+        if "holding" in self.growattMap["registers"]:
+            for key in self.growattMap["registers"]["input"]:
+                definition = self.growattMap["registers"]["input"][key]
+                payload = self.__construct_payload(definition)
+                payloads = {**payloads, **payload}
+
+        if "transform" in self.growattMap.keys():
+            for key in self.growattMap["transform"]:
+                definition = self.growattMap["transform"][key]
+                definition["name"] = key
+                payload = self.__construct_payload(definition)
+                #definition = self.growattMap["transform"][key]
+                #print(definition)
+                payloads = {**payloads, **payload}
+
+        return payloads

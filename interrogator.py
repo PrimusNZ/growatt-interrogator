@@ -12,6 +12,7 @@ from paho.mqtt import client as mqtt_client
 import random
 import requests
 import sys
+import json
 from GrowattMap import GrowattMap
 
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -101,6 +102,12 @@ def connect_mqtt():
             client.subscribe(topic1, qos=0)
             topic2 = ('%s/%s' %(MqttStub, MqttTopicCharge))
             client.subscribe(topic2, qos=0)
+
+            # Discover to HA
+            discovery_topics = gMap.discover()
+            for payload in discovery_topics.items():
+                payload[1]["state_topic"]="%s/%s" %(MqttStub, payload[1]["state_topic"])
+                client.publish(payload[0], json.dumps(payload[1], indent = 4),0,True)
 
         else:
             print("Failed to connect, return code %d\n", rc)

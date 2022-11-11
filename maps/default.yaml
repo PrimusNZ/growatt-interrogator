@@ -6,22 +6,31 @@ registers:
         0: Battery First
         1: Solar First
         2: Grid First
+      type: sensor
     2:
       name: State Charge
       states:
         0: Solar First
         1: Solar and Grid
         2: Solar Only
+      type: sensor
     8:
       name: AC Input Mode
       states:
         0: Appliance
         1: UPS
         2: Generator
+      type: sensor
     34:
       name: Max Charge Current
+      device_class: current
+      unit_of_measurement: A
+      type: sensor
     38:
       name: Max AC Charge Current
+      device_class: current
+      unit_of_measurement: A
+      type: sensor
     39:
       name: Battery Type
       states:
@@ -30,6 +39,7 @@ registers:
         2: User Defined
         3: Lithium
         4: User Defined 2
+      type: sensor
 
   input:
     0:
@@ -48,126 +58,212 @@ registers:
         10: AC Charge and Bypass
         11: Bypass
         12: PV Charge and Discharge
+      type: sensor
     1:
       name: PV Volts
       type: float
       math: a/10
+      device_class: voltage
+      unit_of_measurement: V
+      type: sensor
     4:
       name: PV Power
       type: int
       math: a/10
+      device_class: power
+      unit_of_measurement: W
+      type: sensor
     10:
       name: Consumption
       type: int
       math: a/10
+      device_class: power
+      unit_of_measurement: W
+      type: sensor
     12:
       name: Inverter Voltamps
       type: float
       math: a/1000
+      device_class: current
+      unit_of_measurement: A
+      type: sensor
     14:
       name: AC Power
       type: int
       math: a/10
       add: 70
+      device_class: power
+      unit_of_measurement: W
+      type: sensor
     17:
       name: Battery Volts
       type: float
       math: a/100
+      device_class: voltage
+      unit_of_measurement: V
+      type: sensor
     18:
       name: Battery State Of Charge
       type: int
+      device_class: battery
+      unit_of_measurement: "%"
+      type: sensor
     19:
       name: Charge Volts
       type: float
       math: a/100
+      device_class: voltage
+      unit_of_measurement: V
+      type: sensor
     20:
       name: Grid Volts
       type: float
       math: a/10
+      device_class: voltage
+      unit_of_measurement: V
+      type: sensor
     21:
       name: Grid Frequency
       type: float
       math: a/100
+      device_class: frequency
+      unit_of_measurement: Hz
+      type: sensor
     22:
       name: Inverter Volts
       type: float
       math: a/10
+      device_class: voltage
+      unit_of_measurement: V
+      type: sensor
     23:
       name: Inverter Frequency
       type: float
       math: a/100
+      device_class: frequency
+      unit_of_measurement: Hz
+      type: sensor
     25:
       name: Inverter Temp
       type: int
       math: a/10
+      device_class: temperature
+      unit_of_measurement: "C"
+      type: sensor
     26:
       name: DCDC Temp
       type: int
       math: a/10
+      device_class: temperature
+      unit_of_measurement: "C"
+      type: sensor
     27:
       name: Inverter Load
       type: float
       math: a/10
+      unit_of_measurement: "%"
+      type: sensor
     51:
       name: Solar History Total
       type: int
       math: a*100
+      device_class: energy
+      unit_of_measurement: Wh
+      state_class: total_increasing
+      type: sensor
     59:
       name: Charge History Total
       type: int
       math: a*100
       add: 51
+      device_class: energy
+      unit_of_measurement: Wh
+      state_class: total_increasing
+      type: sensor
     61:
       name: Battery Consumption Today
       type: float
       math: a/10
       round: 0
+      type: sensor
     63:
       name: Battery History Total
       type: int
       math: a*100
+      device_class: energy
+      unit_of_measurement: Wh
+      state_class: total_increasing
+      type: sensor
     67:
       name: AC History Total
       type: int
       math: a*100
       add: 59
+      device_class: energy
+      unit_of_measurement: Wh
+      state_class: total_increasing
+      type: sensor
     74:
       name: Battery Consumption
       type: float
       math: a/10
       round: 0
+      device_class: power
+      unit_of_measurement: W
+      type: sensor
     82:
       name: Inverter Fan Speed
       type: int
+      unit_of_measurement: "%"
+      type: sensor
     83:
       name: Charge Current
       type: float
       math: a/10
       round: 0
+      device_class: current
+      unit_of_measurement: A
+      type: sensor
 
 transform:
   Grid Connected:
     condition: a>=100
     sources:
       - Grid Volts
+    payload_on: true
+    payload_off: false
+    type: binary_sensor
   Charge Power:
     round: 0
     math: a*b
     sources:
       - Charge Current
       - Charge Volts
+    device_class: power
+    unit_of_measurement: W
+    type: sensor
   Battery Power:
     math: a-b
     sources:
       - Battery Consumption
       - Charge Power
+    device_class: power
+    unit_of_measurement: W
+    type: sensor
   Consumption Total:
     math: a+b
     sources:
       - AC History Total
       - Battery History Total
+    device_class: energy
+    unit_of_measurement: Wh
+    state_class: total_increasing
+    type: sensor
   Consumption Combined:
     math: a+b
     sources:
       - Consumption
       - Charge Power
+    device_class: power
+    unit_of_measurement: W
+    type: sensor
