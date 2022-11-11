@@ -13,6 +13,8 @@ InverterPort=$(bashio::config inverter_port "/dev/ttyUSB0")
 
 Verbose=$(bashio::config verbose)
 
+Mapfile=$(bashio::config mapfile)
+
 cat > /etc/growatt/pvinverter.cfg <<EOF
 # Register at pvoutput.org to get your SYSTEMID and APIKEY
 PVOEnabled=$PVO_Enabled
@@ -21,6 +23,7 @@ APIKey=$PVO_APIKey
 
 # Inverter
 Inverter=$InverterPort
+Mapfile=$Mapfile
 
 # Logging
 Verbose=$Verbose
