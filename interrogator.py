@@ -59,6 +59,7 @@ except:
     sys.exit()
 
 def inverter_read():
+  data={}
   try:
     # Sending Current State
     holding_registers = Inverter.read_holding_registers(0,ReadRegisters)

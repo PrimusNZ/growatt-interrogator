@@ -31,4 +31,4 @@ uart: true
 services:
   - mqtt:need
 
-image: ghcr.io/primusnz/hassio-addons/{arch}-growatt-interrogator
+#image: ghcr.io/primusnz/hassio-addons/{arch}-growatt-interrogator
