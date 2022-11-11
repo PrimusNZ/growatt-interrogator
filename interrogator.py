@@ -60,17 +60,17 @@ except:
 
 def inverter_read():
   data={}
-  try:
+  #try:
     # Sending Current State
-    holding_registers = Inverter.read_holding_registers(0,ReadRegisters)
-    gMap.parse('holding', holding_registers.registers)
+  holding_registers = Inverter.read_holding_registers(0,ReadRegisters)
+  gMap.parse('holding', holding_registers.registers)
 
-    input_registers = Inverter.read_input_registers(0,ReadRegisters)
-    gMap.parse('input', input_registers.registers)
+  input_registers = Inverter.read_input_registers(0,ReadRegisters)
+  gMap.parse('input', input_registers.registers)
 
-    data = gMap.finalise()
-  except:
-    print("Exception while retrieving state")
+  data = gMap.finalise()
+  #except:
+  #  print("Exception while retrieving state")
 
   return data
 
