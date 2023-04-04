@@ -120,7 +120,7 @@ registers:
       unit_of_measurement: "%"
       type: sensor
     19:
-      name: Bus Volts
+      name: Charge Volts
       type: float
       math: a/100
       device_class: voltage
@@ -154,13 +154,13 @@ registers:
       device_class: frequency
       unit_of_measurement: Hz
       type: sensor
-    24:
-      name: Charge Volts
-      type: float
-      math: a/100
-      device_class: voltage
-      unit_of_measurement: V
-      type: sensor
+#    24:
+#      name: Charge Volts
+#      type: float
+#      math: a/100
+#      device_class: voltage
+#      unit_of_measurement: V
+#      type: sensor
     25:
       name: Inverter Temp
       type: int
