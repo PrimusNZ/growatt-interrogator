@@ -30,7 +30,10 @@ PVOEnabled = config['PVOEnabled']
 SystemID = config['SystemID']
 APIKey = config['APIKey']
 
-Verbose = config['Verbose']
+if config['Verbose'].lower() == 'true':
+    Verbose = True
+else
+    Verbose = False
 
 Mapfile = config['Mapfile']
 
@@ -89,7 +92,7 @@ def pv_upload():
     api_headers={'X-Pvoutput-Apikey':APIKey,'X-Pvoutput-SystemId':SystemID}
 
     x = requests.post(url, data = upload, headers = api_headers)
-    if Verbose.lower() == 'true':
+    if Verbose:
         print("%s %s: Pushed data to PVOutput.org - %s" %(t_date, t_time, x.text))
 
 def connect_mqtt():
@@ -125,7 +128,7 @@ def connect_mqtt():
 def on_message(client,userdata,message):
     topic = message.topic
     msg = message.payload.decode("utf-8")
-    if Verbose.lower() == 'true':
+    if Verbose:
         print("Received message: '%s' on '%s'" %(msg,topic))
 
     valid=False
@@ -143,12 +146,12 @@ def on_message(client,userdata,message):
 def publish(client,stub,data):
     topic = ('%s/%s' %(MqttStub, stub))
     client.publish(topic, data)
-    if Verbose.lower() == 'true':
+    if Verbose:
         print("Published '%s' to '%s'" %(data, topic))
 
 def run():
     print("Growatt Interrogator Starting")
-    print("Verbose: %s" %(Verbose.lower()))
+    print("Verbose: %s" %(Verbose))
     print("Using serial port: %s" %(InverterPort))
     print("Publishing states to '%s/'" %(MqttStub))
     client = connect_mqtt()
@@ -169,7 +172,7 @@ def set_register(register,value):
         try:
             # Read data from inverter
             holding_registers = Inverter.read_holding_registers(register,1)
-            if Verbose.lower() == 'true':
+            if Verbose:
                 print ('Register %s changed from %s to %s' %(register, holding_registers.registers[0], value))
             Inverter.write_registers(register,value)
 

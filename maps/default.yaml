@@ -16,6 +16,13 @@ registers:
         2: Solar Only
       type: select
       icon: mdi:battery-charging-high
+    7:
+      name: PV Input Mode
+      states:
+        0: Independent
+        1: Parrallel
+      type: sensor
+      icon: mdi:engine
     8:
       name: AC Input Mode
       states:
@@ -113,7 +120,7 @@ registers:
       unit_of_measurement: "%"
       type: sensor
     19:
-      name: Charge Volts
+      name: Bus Volts
       type: float
       math: a/100
       device_class: voltage
@@ -147,6 +154,13 @@ registers:
       device_class: frequency
       unit_of_measurement: Hz
       type: sensor
+    24:
+      name: Charge Volts
+      type: float
+      math: a/100
+      device_class: voltage
+      unit_of_measurement: V
+      type: sensor
     25:
       name: Inverter Temp
       type: int
@@ -168,6 +182,13 @@ registers:
       unit_of_measurement: "%"
       type: sensor
       icon: mdi:tray-arrow-up
+    47:
+      name: Constant Power OK
+      states:
+        0: Not OK
+        1: OK
+      type: sensor
+      icon: mdi:information
     51:
       name: Solar History Total
       type: int
@@ -218,6 +239,13 @@ registers:
       device_class: power
       unit_of_measurement: W
       type: sensor
+    80:
+      name: Battery Over Charge
+      states:
+        0: Not Over Charge
+        1: Over Charge
+      type: sensor
+      icon: mdi:information
     82:
       name: Inverter Fan Speed
       type: int
