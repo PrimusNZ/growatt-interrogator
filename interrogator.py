@@ -32,7 +32,7 @@ APIKey = config['APIKey']
 
 if config['Verbose'].lower() == 'true':
     Verbose = True
-else
+else:
     Verbose = False
 
 Mapfile = config['Mapfile']
