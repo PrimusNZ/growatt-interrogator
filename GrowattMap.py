@@ -126,7 +126,7 @@ class GrowattMap:
             value=eval(math)
 
         if "data_type" in def_keys:
-            key_type = definition["data_type"]
+            key_type = transform["data_type"]
             if key_type=="int":
                 value=int(value)
             elif key_type=="float":
