@@ -87,6 +87,15 @@ registers:
       device_class: power
       unit_of_measurement: W
       type: sensor
+    
+    7:
+      name: PV Charge Current
+      data_type: float
+      math: a*0.1
+      device_class: power
+      unit_of_measurement: A
+      type: sensor
+      
     9:
       or: 10
       name: Consumption
@@ -334,15 +343,6 @@ registers:
 #      device_class: current
 #      unit_of_measurement: A
 #      type: sensor
-
-    186:
-      or: 187
-      name: PV Charge Current
-      data_type: float
-      math: a*0.1
-      device_class: power
-      unit_of_measurement: A
-      type: sensor
 
 transform:
   Grid Connected:
