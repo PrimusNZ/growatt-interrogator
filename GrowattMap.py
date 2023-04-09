@@ -66,15 +66,6 @@ class GrowattMap:
             subtract = self.__fetch_raw(definition["subtract"])
             value=value-subtract
 
-        if "data_type" in def_keys:
-            key_type = definition["data_type"]
-            if key_type=="int":
-                value=int(value)
-            elif key_type=="float":
-                value=float(value)
-        else:
-            value=int(value)
-
         if "states" in def_keys:
             states = definition["states"]
             if value in states:
@@ -84,6 +75,15 @@ class GrowattMap:
         elif "math" in def_keys:
             math=definition["math"].replace("a","%s" %(value))
             value=eval(math)
+
+        if "data_type" in def_keys:
+            key_type = definition["data_type"]
+            if key_type=="int":
+                value=int(value)
+            elif key_type=="float":
+                value="{:.2f}".format(float(value))
+        else:
+            value=str(value)
 
         if "round" in def_keys:
             value=round(value,int(definition["round"]))
@@ -124,6 +124,15 @@ class GrowattMap:
             if replacements==4:
                 math=math.replace("d","%s" %(values[3]))
             value=eval(math)
+
+        if "data_type" in def_keys:
+            key_type = definition["data_type"]
+            if key_type=="int":
+                value=int(value)
+            elif key_type=="float":
+                value="{:.2f}".format(float(value))
+        else:
+            value=str(value)
 
         if "round" in def_keys:
             value=round(value,int(transform["round"]))

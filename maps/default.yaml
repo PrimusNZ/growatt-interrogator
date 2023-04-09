@@ -20,7 +20,7 @@ registers:
       name: PV Input Mode
       states:
         0: Independent
-        1: Parrallel
+        1: Parallel
       type: sensor
       icon: mdi:engine
     8:
@@ -33,11 +33,13 @@ registers:
       icon: mdi:engine
     34:
       name: Max Charge Current
+      data_type: int
       device_class: current
       unit_of_measurement: A
       type: sensor
     38:
       name: Max AC Charge Current
+      data_type: int
       device_class: current
       unit_of_measurement: A
       type: sensor
@@ -97,8 +99,7 @@ registers:
       name: Inverter Voltamps
       data_type: float
       math: a*0.001
-      device_class: current
-      unit_of_measurement: A
+      device_class: apparent_power
       type: sensor
 
     13:
@@ -132,7 +133,7 @@ registers:
       type: sensor
     21:
       name: Grid Frequency
-      data_type: float
+      data_type: int
       math: a*0.01
       device_class: frequency
       unit_of_measurement: Hz
@@ -146,7 +147,7 @@ registers:
       type: sensor
     23:
       name: Inverter Frequency
-      data_type: float
+      data_type: int
       math: a*0.01
       device_class: frequency
       unit_of_measurement: Hz
@@ -175,7 +176,7 @@ registers:
       type: sensor
     27:
       name: Inverter Load
-      data_type: float
+      data_type: int
       math: a*0.1
       unit_of_measurement: "%"
       type: sensor
@@ -183,7 +184,7 @@ registers:
 
     34:
       name: Output Current
-      data_type: int
+      data_type: float
       math: a*0.1
       device_class: current
       unit_of_measurement: A
@@ -191,7 +192,7 @@ registers:
 
     35:
       name: Inverter Current
-      data_type: int
+      data_type: float
       math: a*0.01
       device_class: current
       unit_of_measurement: A
@@ -223,6 +224,7 @@ registers:
         1: OK
       type: sensor
       icon: mdi:information
+
     51:
       name: Solar History Total
       data_type: int
@@ -231,6 +233,7 @@ registers:
       unit_of_measurement: Wh
       state_class: total_increasing
       type: sensor
+
     59:
       name: Charge History Total
       data_type: int
@@ -240,14 +243,16 @@ registers:
       unit_of_measurement: Wh
       state_class: total_increasing
       type: sensor
+
     61:
       name: Battery Consumption Today
-      data_type: float
+      data_type: int
       math: a*0.1
       round: 0
       device_class: energy
       unit_of_measurement: Wh
       type: sensor
+
     63:
       name: Battery History Total
       data_type: int
@@ -256,6 +261,7 @@ registers:
       unit_of_measurement: Wh
       state_class: total_increasing
       type: sensor
+
     67:
       name: AC History Total
       data_type: int
@@ -268,7 +274,7 @@ registers:
 
     68:
       name: AC Charge Current
-      data_type: int
+      data_type: float
       math: a*0.1
       device_class: current
       unit_of_measurement: A
@@ -283,7 +289,6 @@ registers:
       unit_of_measurement: W
       type: sensor
 
-
 #    77:
 #      signed: 78
 #      or: 78
@@ -293,6 +298,7 @@ registers:
 #      device_class: power
 #      unit_of_measurement: W
 #      type: sensor      
+
     80:
       name: Battery Over Charge
       states:
@@ -314,6 +320,7 @@ registers:
       unit_of_measurement: "%"
       type: sensor
       icon: mdi:fan
+
 #    83:
 #      name: Charge Current
 #      type: float
@@ -326,10 +333,10 @@ registers:
     186:
       or: 187
       name: PV Charge Current
-      data_type: int
+      data_type: float
       math: a*0.1
       device_class: power
-      unit_of_measurement: W
+      unit_of_measurement: A
       type: sensor
 
 transform:
@@ -344,6 +351,7 @@ transform:
   
   Charge Power:
     math: a+b
+    data_type: int
     sources:
       - AC Charge Power
       - PV Power
@@ -353,6 +361,7 @@ transform:
 
   Battery Power:
     math: a-b
+    data_type: int
     sources:
       - Discharge Power
       - Charge Power
@@ -362,6 +371,7 @@ transform:
 
   Charge Current:
     math: a+b
+    data_type: float
     sources:
       - AC Charge Current
       - PV Charge Current
@@ -371,6 +381,7 @@ transform:
 
   Consumption Total:
     math: a+b
+    data_type: int
     sources:
       - AC History Total
       - Battery History Total
@@ -378,8 +389,10 @@ transform:
     unit_of_measurement: Wh
     state_class: total_increasing
     type: sensor
+
   Consumption Combined:
     math: a+b
+    data_type: int
     sources:
       - Consumption
       - Charge Power
