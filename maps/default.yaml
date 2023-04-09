@@ -165,14 +165,14 @@ registers:
       data_type: int
       math: a*0.1
       device_class: temperature
-      unit_of_measurement: "C"
+      unit_of_measurement: "°C"
       type: sensor
     26:
       name: DCDC Temp
       data_type: int
       math: a*0.1
       device_class: temperature
-      unit_of_measurement: "C"
+      unit_of_measurement: "°C"
       type: sensor
     27:
       name: Inverter Load
@@ -225,50 +225,55 @@ registers:
       type: sensor
       icon: mdi:information
 
-    51:
+    50:
+      or: 51
       name: Solar History Total
       data_type: int
-      math: a*100
+      math: a*0.1
       device_class: energy
-      unit_of_measurement: Wh
+      unit_of_measurement: kWh
       state_class: total_increasing
       type: sensor
 
-    59:
+    58:
+      or: 59
       name: Charge History Total
       data_type: int
-      math: a*100
+      math: a*0.1
       add: 51
       device_class: energy
-      unit_of_measurement: Wh
+      unit_of_measurement: kWh
       state_class: total_increasing
       type: sensor
 
-    61:
+    60:
+      or: 61
       name: Battery Consumption Today
       data_type: int
       math: a*0.1
       round: 0
       device_class: energy
-      unit_of_measurement: Wh
+      unit_of_measurement: kWh
       type: sensor
 
-    63:
+    62:
+      or: 63
       name: Battery History Total
       data_type: int
-      math: a*100
+      math: a*0.1
       device_class: energy
-      unit_of_measurement: Wh
+      unit_of_measurement: kWh
       state_class: total_increasing
       type: sensor
 
-    67:
+    66:
+      or: 67
       name: AC History Total
       data_type: int
-      math: a*100
+      math: a*0.1
       add: 59
       device_class: energy
-      unit_of_measurement: Wh
+      unit_of_measurement: kWh
       state_class: total_increasing
       type: sensor
 
@@ -386,7 +391,7 @@ transform:
       - AC History Total
       - Battery History Total
     device_class: energy
-    unit_of_measurement: Wh
+    unit_of_measurement: kWh
     state_class: total_increasing
     type: sensor
 
