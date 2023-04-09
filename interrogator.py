@@ -39,7 +39,7 @@ Mapfile = config['Mapfile']
 
 
 # Static settings
-MqttStub = "Growatt"
+MqttStub = "gwi"
 ReadRegisters = 101
 client_id = f'inverter-stats-{random.randint(0, 1000)}'
 gMap = GrowattMap(Mapfile)
@@ -143,7 +143,6 @@ def on_message(client,userdata,message):
     valid=False
 
     try:
-        MqttStub = "Growatt"
         topic_stub = topic.replace("%s/cmnd/" %(MqttStub),"")
         register = gMap.decode_mqtt(topic_stub, msg)
         if register != False:
