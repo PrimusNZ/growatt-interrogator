@@ -72,116 +72,140 @@ registers:
       icon: mdi:information
     1:
       name: PV Volts
-      type: float
-      math: a/10
+      data_type: float
+      math: a*0.1
       device_class: voltage
       unit_of_measurement: V
       type: sensor
-    4:
+    3:
+      or: 4
       name: PV Power
-      type: int
-      math: a/10
+      data_type: int
+      math: a*0.1
       device_class: power
       unit_of_measurement: W
       type: sensor
-    10:
+    9:
+      or: 10
       name: Consumption
-      type: int
-      math: a/10
+      data_type: int
+      math: a*0.1
       device_class: power
       unit_of_measurement: W
       type: sensor
     12:
       name: Inverter Voltamps
-      type: float
-      math: a/1000
+      data_type: float
+      math: a*0.001
       device_class: current
       unit_of_measurement: A
       type: sensor
-    14:
-      name: AC Power
-      type: int
-      math: a/10
-      add: 70
-      device_class: power
-      unit_of_measurement: W
-      type: sensor
     17:
       name: Battery Volts
-      type: float
-      math: a/100
+      data_type: float
+      math: a*0.01
       device_class: voltage
       unit_of_measurement: V
       type: sensor
     18:
       name: Battery State Of Charge
-      type: int
+      data_type: int
       device_class: battery
       unit_of_measurement: "%"
       type: sensor
-    19:
-      name: Charge Volts
-      type: float
-      math: a/100
-      device_class: voltage
-      unit_of_measurement: V
-      type: sensor
     20:
       name: Grid Volts
-      type: float
-      math: a/10
+      data_type: float
+      math: a*0.1
       device_class: voltage
       unit_of_measurement: V
       type: sensor
     21:
       name: Grid Frequency
-      type: float
-      math: a/100
+      data_type: float
+      math: a*0.01
       device_class: frequency
       unit_of_measurement: Hz
       type: sensor
     22:
       name: Inverter Volts
-      type: float
-      math: a/10
+      data_type: float
+      math: a*0.1
       device_class: voltage
       unit_of_measurement: V
       type: sensor
     23:
       name: Inverter Frequency
-      type: float
-      math: a/100
+      data_type: float
+      math: a*0.01
       device_class: frequency
       unit_of_measurement: Hz
       type: sensor
-#    24:
-#      name: Charge Volts
-#      type: float
-#      math: a/100
-#      device_class: voltage
-#      unit_of_measurement: V
-#      type: sensor
+    24:
+      name: Output Volts
+      data_type: float
+      math: a*0.1
+      device_class: voltage
+      unit_of_measurement: V
+      type: sensor
+
     25:
       name: Inverter Temp
-      type: int
-      math: a/10
+      data_type: int
+      math: a*0.1
       device_class: temperature
       unit_of_measurement: "C"
       type: sensor
     26:
       name: DCDC Temp
-      type: int
-      math: a/10
+      data_type: int
+      math: a*0.1
       device_class: temperature
       unit_of_measurement: "C"
       type: sensor
     27:
       name: Inverter Load
-      type: float
-      math: a/10
+      data_type: float
+      math: a*0.1
       unit_of_measurement: "%"
       type: sensor
       icon: mdi:tray-arrow-up
+
+    34:
+      name: Output Current
+      data_type: int
+      math: a*0.1
+      device_class: current
+      unit_of_measurement: A
+      type: sensor
+
+    35:
+      name: Inverter Current
+      data_type: int
+      math: a*0.01
+      device_class: current
+      unit_of_measurement: A
+      type: sensor
+
+    36:
+      name: AC Power
+      or: 37
+      data_type: int
+      math: a*0.1
+      device_class: energy
+      unit_of_measurement: W
+      type: sensor
+
+    42:
+      name: Fault Code
+      data_type: int
+      type: sensor
+
+    43:
+      name: Warning Code
+      data_type: int
+      type: sensor
+
     47:
       name: Constant Power OK
       states:
@@ -191,7 +215,7 @@ registers:
       icon: mdi:information
     51:
       name: Solar History Total
-      type: int
+      data_type: int
       math: a*100
       device_class: energy
       unit_of_measurement: Wh
@@ -199,7 +223,7 @@ registers:
       type: sensor
     59:
       name: Charge History Total
-      type: int
+      data_type: int
       math: a*100
       add: 51
       device_class: energy
@@ -208,15 +232,15 @@ registers:
       type: sensor
     61:
       name: Battery Consumption Today
-      type: float
-      math: a/10
+      data_type: float
+      math: a*0.1
       round: 0
       device_class: energy
       unit_of_measurement: Wh
       type: sensor
     63:
       name: Battery History Total
-      type: int
+      data_type: int
       math: a*100
       device_class: energy
       unit_of_measurement: Wh
@@ -224,21 +248,50 @@ registers:
       type: sensor
     67:
       name: AC History Total
-      type: int
+      data_type: int
       math: a*100
       add: 59
       device_class: energy
       unit_of_measurement: Wh
       state_class: total_increasing
       type: sensor
-    74:
-      name: Battery Consumption
-      type: float
-      math: a/10
-      round: 0
+
+    68:
+      name: Charge Current
+      data_type: int
+      math: a*0.1
+      device_class: current
+      unit_of_measurement: A
+      type: sensor
+
+    69:
+      or: 70
+      name: Charge Power
+      data_type: int
+      math: a*0.1
       device_class: power
       unit_of_measurement: W
       type: sensor
+
+    73:
+      or: 74
+      name: Discharge Power
+      data_type: int
+      math: a*0.1
+      device_class: power
+      unit_of_measurement: W
+      type: sensor
+
+
+#    77:
+#      signed: 78
+#      or: 78
+#      name: Battery Power
+#      data_type: int
+#      math: a*0.1
+#      device_class: power
+#      unit_of_measurement: W
+#      type: sensor      
     80:
       name: Battery Over Charge
       states:
@@ -246,19 +299,36 @@ registers:
         1: Over Charge
       type: sensor
       icon: mdi:information
-    82:
-      name: Inverter Fan Speed
-      type: int
+    
+    81:
+      name: MPPT Fan Speed
+      data_type: int
       unit_of_measurement: "%"
       type: sensor
       icon: mdi:fan
-    83:
-      name: Charge Current
-      type: float
-      math: a/10
-      round: 0
-      device_class: current
-      unit_of_measurement: A
+    
+    82:
+      name: Inverter Fan Speed
+      data_type: int
+      unit_of_measurement: "%"
+      type: sensor
+      icon: mdi:fan
+#    83:
+#      name: Charge Current
+#      type: float
+#      math: a*0.1
+#      round: 0
+#      device_class: current
+#      unit_of_measurement: A
+#      type: sensor
+
+    186:
+      or: 187
+      name: PV Current
+      data_type: int
+      math: a*0.1
+      device_class: power
+      unit_of_measurement: W
       type: sensor
 
 transform:
@@ -270,19 +340,10 @@ transform:
     payload_off: "OFF"
     type: binary_sensor
     icon: mdi:transmission-tower
-  Charge Power:
-    round: 0
-    math: a*b
-    sources:
-      - Charge Current
-      - Charge Volts
-    device_class: power
-    unit_of_measurement: W
-    type: sensor
   Battery Power:
     math: a-b
     sources:
-      - Battery Consumption
+      - Discharge Power
       - Charge Power
     device_class: power
     unit_of_measurement: W

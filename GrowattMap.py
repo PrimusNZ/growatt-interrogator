@@ -1,4 +1,7 @@
 import yaml
+import ctypes
+import struct
+import math
 
 class GrowattMap:
 
@@ -24,20 +27,47 @@ class GrowattMap:
 
         return self.return_keys
 
+    def get_register_ranges(self, register_map):
+        if (register_map in self.growattMap["registers"]):
+            max_key=0
+            register_maps=[]
+            for key in self.growattMap["registers"][register_map].keys():
+                if key > max_key:
+                    max_key = key
+            starting_reg=0
+            last_reg=0
+            loops = math.ceil(max_key/100)
+            for x in range(loops):
+                register_maps.append([last_reg,100])
+                last_reg = last_reg+100
+            return register_maps
+        else:
+            return [0]
+
+
     def __calculate_key(self, key, definition):
         key_name = self.__convert_name(definition["name"])
         def_keys = definition.keys()
         value = self.__fetch_raw(key)
 
+        if "signed" in def_keys:
+            value2 = self.__fetch_raw(definition["signed"])
+            value = struct.unpack('f',struct.pack('<HH',int(value),int(value2)))[0]
+
+        if "or" in def_keys:
+            orvalue = self.__fetch_raw(definition["or"])
+            if value == 0:
+                value=orvalue
+
         if "add" in def_keys:
             add = self.__fetch_raw(definition["add"])
             value=value+add
         elif "subtract" in def_keys:
-            subtract = self.__fetch_raw(definition["add"])
+            subtract = self.__fetch_raw(definition["subtract"])
             value=value-subtract
 
-        if "type" in def_keys:
-            key_type = definition["type"]
+        if "data_type" in def_keys:
+            key_type = definition["data_type"]
             if key_type=="int":
                 value=int(value)
             elif key_type=="float":

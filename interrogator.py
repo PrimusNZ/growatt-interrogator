@@ -64,11 +64,20 @@ def inverter_read():
   data={}
   try:
     # Sending Current State
-    holding_registers = Inverter.read_holding_registers(0,ReadRegisters)
-    gMap.parse('holding', holding_registers.registers)
+    registers = []
+    register_ranges = gMap.get_register_ranges("holding")
+    
+    for range in register_ranges:
+        holding_registers = Inverter.read_holding_registers(range[0],range[1])
+        registers.extend(holding_registers.registers)
+    gMap.parse('holding', registers)
 
-    input_registers = Inverter.read_input_registers(0,ReadRegisters)
-    gMap.parse('input', input_registers.registers)
+    registers = []
+    register_ranges = gMap.get_register_ranges("input")
+    for range in register_ranges:
+        input_registers = Inverter.read_input_registers(range[0],range[1])
+        registers.extend(input_registers.registers)
+    gMap.parse('input', registers)
 
     data = gMap.finalise()
   except:
