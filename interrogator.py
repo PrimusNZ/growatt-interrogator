@@ -30,10 +30,17 @@ PVOEnabled = config['PVOEnabled']
 SystemID = config['SystemID']
 APIKey = config['APIKey']
 
+DebugRegisters = config['DebugRegisters'].split(",")
+
 if config['Verbose'].lower() == 'true':
     Verbose = True
 else:
     Verbose = False
+
+if config['Discover'].lower() == 'false':
+    Discovery = False
+else:
+    Discovery = True
 
 Mapfile = config['Mapfile']
 
@@ -42,7 +49,7 @@ Mapfile = config['Mapfile']
 MqttStub = "gwi"
 ReadRegisters = 101
 client_id = f'inverter-stats-{random.randint(0, 1000)}'
-gMap = GrowattMap(Mapfile)
+gMap = GrowattMap(Mapfile, DebugRegisters)
 
 try:
     Inverter = ModbusClient(method='rtu', port=InverterPort, baudrate=9600, stopbits=1, parity='N', bytesize=8, timeout=1)
@@ -118,7 +125,10 @@ def connect_mqtt():
                     payload[1]["command_topic"]=topic
                     print("Listening for cmnd changes on '%s'" %(topic))
                 payload[1]["state_topic"]="%s/%s" %(MqttStub, payload[1]["state_topic"])
-                client.publish(payload[0], json.dumps(payload[1], indent = 4),0,True)
+                if Discovery:
+                    client.publish(payload[0], json.dumps(payload[1], indent = 4),0,True)
+                else:
+                    client.publish(payload[0], "",0,True)
 
         else:
             print("Failed to connect, return code %d\n", rc)

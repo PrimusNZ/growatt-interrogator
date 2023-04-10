@@ -8,6 +8,9 @@ configuration:
   verbose:
     name: Verbose Logging
     description: Enables log-spamming of everything the addon script is doing - Disable for everyday use recommended
+  discovery:
+    name: Automatic Discovery in Home Assistant
+    description: Allows Home Assistant to automatically discover sensors from the addon
   pvoutput_systemid:
     name: PVOutput System ID
     description: System ID for the PVOutput site you are reporting for
@@ -17,3 +20,6 @@ configuration:
   mapfile:
     name: Inverter Map
     description: Map file to use to accurately report firmware values
+  debug_registers:
+    name: Enable Debugging for listed registers
+    description: Enables more debugging on a register-by-register basis. Comma separated list.

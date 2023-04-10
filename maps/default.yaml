@@ -303,15 +303,15 @@ registers:
       unit_of_measurement: W
       type: sensor
 
-#    77:
-#      signed: 78
-#      or: 78
-#      name: Battery Power
-#      data_type: int
-#      math: a*0.1
-#      device_class: power
-#      unit_of_measurement: W
-#      type: sensor      
+    77:
+      signed: 78
+      or: 78
+      name: Battery Power Testing
+      data_type: int
+      math: a*0.1
+      device_class: power
+      unit_of_measurement: W
+      type: sensor      
 
     80:
       name: Battery Over Charge

@@ -12,6 +12,8 @@ PVO_APIKey=$(bashio::config pvoutput_apikey)
 InverterPort=$(bashio::config inverter_port "/dev/ttyUSB0")
 
 Verbose=$(bashio::config verbose)
+Discovery=$(bashio::config discovery)
+DebugRegisters=$(bashio::config debug_registers)
 
 Mapfile=$(bashio::config mapfile)
 
@@ -27,12 +29,15 @@ Mapfile=$Mapfile
 
 # Logging
 Verbose=$Verbose
+Discovery=$Discovery
 
 # MQTT For Inverter Interrorgator
 MQTTBroker=$MQTT_HOST
 MQTTPort=1883
 MQTTUser=$MQTT_USER
 MQTTPass=$MQTT_PASSWORD
+
+DebugRegisters=$DebugRegisters
 EOF
 
 exec python3 /interrogator.py < /dev/null

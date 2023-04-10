@@ -5,11 +5,12 @@ import math
 
 class GrowattMap:
 
-    def __init__(self,mapFile):
+    def __init__(self,map_file,debug_registers):
         self.return_keys = {}
-        mapPath = "/etc/growatt/maps/%s.yaml" %(mapFile)
+        mapPath = "/etc/growatt/maps/%s.yaml" %(map_file)
         with open(mapPath, 'r') as f:
             self.growattMap = yaml.load(f, Loader=yaml.FullLoader)
+        self.debug_registers = debug_registers
 
     def parse(self, register_map, registers):
         self.registers = registers
@@ -49,35 +50,53 @@ class GrowattMap:
         key_name = self.__convert_name(definition["name"])
         def_keys = definition.keys()
         value = self.__fetch_raw(key)
+        if key in self.debug_registers:
+            Debug=True
+        else:
+            Debug=False
 
         if "signed" in def_keys:
             value2 = self.__fetch_raw(definition["signed"])
+            if Debug:
+                print("Signed Conversion: %s, %s" %(value, value2))
             value = struct.unpack('f',struct.pack('<HH',int(value),int(value2)))[0]
 
         if "or" in def_keys:
             orvalue = self.__fetch_raw(definition["or"])
+            if Debug:
+                print("Or: %s or %s" %(value, orvalue))
             if value == 0:
                 value=orvalue
 
         if "add" in def_keys:
             add = self.__fetch_raw(definition["add"])
+            if Debug:
+                print("Add: %s+%s" %(value, add))
             value=value+add
         elif "subtract" in def_keys:
             subtract = self.__fetch_raw(definition["subtract"])
+            if Debug:
+                print("Subtract: %s+%s" %(value, subtract))
             value=value-subtract
 
         if "states" in def_keys:
             states = definition["states"]
+            if Debug:
+                print("States: %s in %s" %(value, states))
             if value in states:
                 value = states[value]
             else:
                 value = "ERROR"
         elif "math" in def_keys:
             math=definition["math"].replace("a","%s" %(value))
+            if Debug:
+                print("Math: %s" %(math))
             value=eval(math)
 
         if "data_type" in def_keys:
             key_type = definition["data_type"]
+            if Debug:
+                print("Data Type: %s" %(key_type))
             if key_type=="int":
                 value=int(value)
             elif key_type=="float":
@@ -86,6 +105,8 @@ class GrowattMap:
             value=str(value)
 
         if "round" in def_keys:
+            if Debug:
+                print("Round: %s" %(value))
             value=round(value,int(definition["round"]))
 
         return {key_name: value}

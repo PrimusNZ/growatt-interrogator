@@ -1,6 +1,6 @@
 ---
 name: Growatt Interrogator
-version: 1.0.7.4
+version: 1.0.7.5
 slug: growatt_interrogator
 description: A script to interrogate a Growatt Inverter for power information and publishes to MQTT. - Optionally uploads data to PVOutput
 url: https://github.com/PrimusNZ/hassio-addons/tree/master/growatt-interrogator
@@ -15,17 +15,20 @@ hassio_api: true
 init: false
 options:
   inverter_port: /dev/ttyUSB0
+  discovery: true
   pvoutput_enabled: false
   verbose: false
   mapfile: default
 
 schema:
   inverter_port: str
+  discovery: bool
   pvoutput_enabled: bool
   pvoutput_systemid: str?
   pvoutput_apikey: str?
   verbose: bool
   mapfile: list(default)
+  debug_registers: str?
 
 uart: true
 services:
