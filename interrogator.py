@@ -87,8 +87,8 @@ def inverter_read():
     gMap.parse('input', registers)
 
     data = gMap.finalise()
-  except:
-    print("Exception while retrieving state")
+  except Exception as e:
+    print("Exception while retrieving state: %s" %(e))
 
   return data
 
@@ -158,8 +158,8 @@ def on_message(client,userdata,message):
         if register != False:
             set_register(register[0],register[1])
             publish(client, topic_stub, msg)
-    except:
-      print("Exception while changing state")
+    except Exception as e:
+      print("Exception while changing state: %s" %(e))
 
 def publish(client,stub,data):
     topic = ('%s/%s' %(MqttStub, stub))
@@ -194,8 +194,8 @@ def set_register(register,value):
                 print ('Register %s changed from %s to %s' %(register, holding_registers.registers[0], value))
             Inverter.write_registers(register,value)
 
-        except:
-            print("Exception sending state change")
+        except Exception as e:
+            print("Exception sending state change: %s" %(e))
             time.sleep(1)
         else:
             success = True

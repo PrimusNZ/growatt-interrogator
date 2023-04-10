@@ -102,7 +102,7 @@ class GrowattMap:
             if key_type=="int":
                 value=int(value)
             elif key_type=="float":
-                value="{:.2f}".format(float(value))
+                value=float("{:.2f}".format(float(value)))
         else:
             value=str(value)
 
@@ -153,7 +153,7 @@ class GrowattMap:
             if key_type=="int":
                 value=int(value)
             elif key_type=="float":
-                value="{:.2f}".format(float(value))
+                value=float("{:.2f}".format(float(value)))
         else:
             value=str(value)
 
