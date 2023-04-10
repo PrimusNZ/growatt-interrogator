@@ -60,7 +60,7 @@ class GrowattMap:
         if "signed" in def_keys:
             v1 = value
             v2 = self.__fetch_raw(definition["signed"])
-            decoder = BinaryPayloadDecoder.fromRegisters([v1,v2], endian=Endian.Big)
+            decoder = BinaryPayloadDecoder.fromRegisters([v1,v2], byteorder=Endian.Big, wordorder=Endian.Big)
             value=decoder.decode_32bit_int()
 
         if "or" in def_keys:
