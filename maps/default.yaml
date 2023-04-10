@@ -237,7 +237,7 @@ registers:
     50:
       or: 51
       name: Solar History Total
-      data_type: int
+      data_type: float
       math: a*0.1
       device_class: energy
       unit_of_measurement: kWh
@@ -247,7 +247,7 @@ registers:
     58:
       or: 59
       name: Charge History Total
-      data_type: int
+      data_type: float
       math: a*0.1
       add: 51
       device_class: energy
@@ -258,7 +258,7 @@ registers:
     60:
       or: 61
       name: Battery Consumption Today
-      data_type: int
+      data_type: float
       math: a*0.1
       round: 0
       device_class: energy
@@ -268,7 +268,7 @@ registers:
     62:
       or: 63
       name: Battery History Total
-      data_type: int
+      data_type: float
       math: a*0.1
       device_class: energy
       unit_of_measurement: kWh
@@ -278,7 +278,7 @@ registers:
     66:
       or: 67
       name: AC History Total
-      data_type: int
+      data_type: float
       math: a*0.1
       add: 59
       device_class: energy
@@ -385,7 +385,7 @@ transform:
 
   Consumption Total:
     math: a+b
-    data_type: int
+    data_type: float
     sources:
       - AC History Total
       - Battery History Total
