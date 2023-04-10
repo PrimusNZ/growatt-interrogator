@@ -37,7 +37,7 @@ if config['Verbose'].lower() == 'true':
 else:
     Verbose = False
 
-if config['Discover'].lower() == 'false':
+if config['Discovery'].lower() == 'false':
     Discovery = False
 else:
     Discovery = True
