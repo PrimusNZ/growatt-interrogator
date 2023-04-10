@@ -104,7 +104,7 @@ def pv_upload():
     t_date = format(strftime('%Y%m%d'))
     t_time = format(strftime('%H:%M'))
     url="http://pvoutput.org/service/r2/addstatus.jsp"
-    upload={'d':t_date,'t':t_time,'v2':data["pv_power"],'v4':data["consumption"],'v6':data["pv_volts"],'c1':"0"}
+    upload={'d':t_date,'t':t_time,'v2':data["pv_power"],'v4':data["output_power"],'v6':data["pv_volts"],'c1':"0"}
     api_headers={'X-Pvoutput-Apikey':APIKey,'X-Pvoutput-SystemId':SystemID}
 
     x = requests.post(url, data = upload, headers = api_headers)
