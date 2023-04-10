@@ -2,6 +2,8 @@ import yaml
 import ctypes
 import struct
 import math
+from pymodbus.payload import BinaryPayloadDecoder
+from pymodbus.constants import Endian
 
 class GrowattMap:
 
@@ -50,16 +52,16 @@ class GrowattMap:
         key_name = self.__convert_name(definition["name"])
         def_keys = definition.keys()
         value = self.__fetch_raw(key)
-        if key in self.debug_registers:
+        if str(key) in self.debug_registers:
             Debug=True
         else:
             Debug=False
-
+        
         if "signed" in def_keys:
-            value2 = self.__fetch_raw(definition["signed"])
-            if Debug:
-                print("Signed Conversion: %s, %s" %(value, value2))
-            value = struct.unpack('f',struct.pack('<HH',int(value),int(value2)))[0]
+            v1 = value
+            v2 = self.__fetch_raw(definition["signed"])
+            decoder = BinaryPayloadDecoder.fromRegisters([v1,v2], endian=Endian.Big)
+            value=decoder.decode_32bit_int()
 
         if "or" in def_keys:
             orvalue = self.__fetch_raw(definition["or"])

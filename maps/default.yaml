@@ -305,8 +305,7 @@ registers:
 
     77:
       signed: 78
-      or: 78
-      name: Battery Power Testing
+      name: Battery Power
       data_type: int
       math: a*0.1
       device_class: power
@@ -364,15 +363,15 @@ transform:
     unit_of_measurement: W
     type: sensor  
 
-  Battery Power:
-    math: a-b
-    data_type: int
-    sources:
-      - Discharge Power
-      - Charge Power
-    device_class: power
-    unit_of_measurement: W
-    type: sensor
+#  Battery Power:
+#    math: a-b
+#    data_type: int
+#    sources:
+#      - Discharge Power
+#      - Charge Power
+#    device_class: power
+#    unit_of_measurement: W
+#    type: sensor
 
   Charge Current:
     math: a+b

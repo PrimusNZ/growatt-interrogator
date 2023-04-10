@@ -75,14 +75,14 @@ def inverter_read():
     register_ranges = gMap.get_register_ranges("holding")
     
     for range in register_ranges:
-        holding_registers = Inverter.read_holding_registers(range[0],range[1])
+        holding_registers = Inverter.read_holding_registers(range[0],range[1], unit=0x1)
         registers.extend(holding_registers.registers)
     gMap.parse('holding', registers)
 
     registers = []
     register_ranges = gMap.get_register_ranges("input")
     for range in register_ranges:
-        input_registers = Inverter.read_input_registers(range[0],range[1])
+        input_registers = Inverter.read_input_registers(range[0],range[1], unit=0x1)
         registers.extend(input_registers.registers)
     gMap.parse('input', registers)
 
