@@ -384,11 +384,12 @@ transform:
     type: sensor      
 
   Output Total:
-    math: a+b
+    math: a+b+c
     data_type: float
     sources:
       - AC History Total
       - Battery History Total
+      - PV History Total
     device_class: energy
     unit_of_measurement: kWh
     state_class: total_increasing
