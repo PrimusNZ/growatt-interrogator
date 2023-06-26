@@ -1,43 +1,27 @@
 #!/usr/bin/with-contenv bashio
 set -e
 
-MQTT_HOST=$(bashio::services mqtt "host")
-MQTT_USER=$(bashio::services mqtt "username")
-MQTT_PASSWORD=$(bashio::services mqtt "password")
-
-PVO_Enabled=$(bashio::config pvoutput_enabled)
-PVO_SystemID=$(bashio::config pvoutput_systemid)
-PVO_APIKey=$(bashio::config pvoutput_apikey)
-
-InverterPort=$(bashio::config inverter_port "/dev/ttyUSB0")
-
-Verbose=$(bashio::config verbose)
-Discovery=$(bashio::config discovery)
-DebugRegisters=$(bashio::config debug_registers)
-
-Mapfile=$(bashio::config mapfile)
-
 cat > /etc/growatt/pvinverter.cfg <<EOF
 # Register at pvoutput.org to get your SYSTEMID and APIKEY
-PVOEnabled=$PVO_Enabled
-SystemID=$PVO_SystemID
-APIKey=$PVO_APIKey
+PVOEnabled=$(bashio::config pvoutput_enabled)
+SystemID=$(bashio::config pvoutput_systemid)
+APIKey=$(bashio::config pvoutput_apikey)
 
 # Inverter
-Inverter=$InverterPort
-Mapfile=$Mapfile
+Inverter=$(bashio::config inverter_port "/dev/ttyUSB0")
+Mapfile=$(bashio::config mapfile)
 
 # Logging
-Verbose=$Verbose
-Discovery=$Discovery
+Verbose=$(bashio::config verbose)
+Discovery=$(bashio::config discovery)
 
 # MQTT For Inverter Interrorgator
-MQTTBroker=$MQTT_HOST
+MQTTBroker=$(bashio::services mqtt "host")
 MQTTPort=1883
-MQTTUser=$MQTT_USER
-MQTTPass=$MQTT_PASSWORD
+MQTTUser=$(bashio::services mqtt "username")
+MQTTPass=$(bashio::services mqtt "password")
 
-DebugRegisters=$DebugRegisters
+DebugRegisters=$(bashio::config debug_registers)
 EOF
 
-exec python3 /interrogator.py < /dev/null
+/interrogator.py
