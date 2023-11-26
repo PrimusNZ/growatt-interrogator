@@ -1,5 +1,5 @@
-ARG BUILD_FROM
-FROM $BUILD_FROM
+ARG debian:12
+FROM debian:12
 
 # Set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -11,15 +11,12 @@ RUN apt-get clean -y
 RUN rm -rf /var/lib/apt/lists/*
 
 # Copy data
-COPY run.sh /
 COPY *.py /
 
 RUN mkdir -p /etc/growatt/maps
 
 COPY maps/*.yaml /etc/growatt/maps/
 
-RUN chmod a+x /run.sh
+RUN chmod a+x /interrogator.py
 
-CMD [ "/run.sh" ]
-
-LABEL org.opencontainers.image.source https://github.com/PrimusNZ/hassio-addons
+CMD [ "/interrogator.py" ]
