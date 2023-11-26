@@ -9,6 +9,7 @@ import datetime
 from configobj import ConfigObj
 from pymodbus.client.sync import ModbusSerialClient as ModbusClient
 from paho.mqtt import client as mqtt_client
+from os import environ as env
 import random
 import requests
 import sys
@@ -18,31 +19,30 @@ from GrowattMap import GrowattMap
 from apscheduler.schedulers.background import BackgroundScheduler
 
 # read settings from config file
-config = ConfigObj("/etc/growatt/pvinverter.cfg")
-InverterPort = config['Inverter']
-MqttBroker = config['MQTTBroker']
-MqttPort = int(config['MQTTPort'])
-MqttUser = config['MQTTUser']
-MqttPass = config['MQTTPass']
+InverterPort = env.get('INVERTER_PORT')
+MqttBroker = env.get('MQTT_HOST')
+MqttPort = int(env.get('MQTT_PORT'))
+MqttUser = env.get('MQTT_USER')
+MqttPass = env.get('MQTT_PASSWOED')
 
 # PVOutput Configurations
-PVOEnabled = config['PVOEnabled']
-SystemID = config['SystemID']
-APIKey = config['APIKey']
+PVOEnabled = env.get('PVO_ENABLED')
+SystemID = env.get('PVO_SYSTEMID')
+APIKey = env.get('PVO_APIKEY')
 
-DebugRegisters = config['DebugRegisters'].split(",")
+DebugRegisters = env.get('DEBUG_REISTERS').split(",")
 
-if config['Verbose'].lower() == 'true':
+if env.get('VERBOSE').lower() == 'true':
     Verbose = True
 else:
     Verbose = False
 
-if config['Discovery'].lower() == 'false':
+if env.get('DISCOVERY').lower() == 'false':
     Discovery = False
 else:
     Discovery = True
 
-Mapfile = config['Mapfile']
+Mapfile = env.get('MAPFILE')
 
 
 # Static settings
