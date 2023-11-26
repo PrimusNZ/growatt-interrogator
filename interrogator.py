@@ -23,7 +23,7 @@ InverterPort = env.get('INVERTER_PORT')
 MqttBroker = env.get('MQTT_HOST')
 MqttPort = int(env.get('MQTT_PORT'))
 MqttUser = env.get('MQTT_USER')
-MqttPass = env.get('MQTT_PASSWOED')
+MqttPass = env.get('MQTT_PASSWORD')
 
 # PVOutput Configurations
 PVOEnabled = env.get('PVO_ENABLED')
