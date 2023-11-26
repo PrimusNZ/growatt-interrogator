@@ -28,3 +28,27 @@ Inverters using the usbserial kernel driver should work. Your milage may vary.
 - (Optionally) PVOutput account with System ID and API Key
 
 ## Installation
+```
+version: '3'
+
+services:
+  growatt-interrogator:
+    image: "ghcr.io/primusnz/growatt-interrogator:master"
+    container_name: growatt-interrogator
+    restart: unless-stopped
+    devices:
+      - /dev/ttyUSB0:/dev/ttyUSB0 # Your Inverter 
+    environment:
+      - MAPFILE=default
+      - INVERTER_PORT=/dev/ttyUSB0
+      - MQTT_HOST=192.168.X.X
+      - MQTT_PORT=1883
+      - MQTT_USER=USERNAME
+      - MQTT_PASSWORD=PASSWORD
+      - PVO_ENABLED=false
+      - PVO_SYSTEMID=
+      - PVO_APIKEY=
+      - DEBUG_REGISTERS=
+      - VERBOSE=false
+      - DISCOVERY=true
+```

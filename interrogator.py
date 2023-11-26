@@ -5,8 +5,6 @@ Script for fetching data from Growatt inverter for MQTT
 """
 from time import strftime
 import time
-import datetime
-from configobj import ConfigObj
 from pymodbus.client.sync import ModbusSerialClient as ModbusClient
 from paho.mqtt import client as mqtt_client
 from os import environ as env
@@ -30,7 +28,7 @@ PVOEnabled = env.get('PVO_ENABLED')
 SystemID = env.get('PVO_SYSTEMID')
 APIKey = env.get('PVO_APIKEY')
 
-DebugRegisters = env.get('DEBUG_REISTERS').split(",")
+DebugRegisters = env.get('DEBUG_REGISTERS').split(",")
 
 if env.get('VERBOSE').lower() == 'true':
     Verbose = True
