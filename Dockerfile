@@ -1,5 +1,4 @@
-ARG debian:12
-FROM debian:12
+FROM debian:11
 
 # Set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
