@@ -19,4 +19,4 @@ COPY maps/*.yaml /etc/growatt/maps/
 
 RUN chmod a+x /interrogator.py
 
-CMD [ "/interrogator.py" ]
+ENTRYPOINT [ "/usr/bin/python3", "/interrogator.py" ]
