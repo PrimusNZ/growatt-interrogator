@@ -61,15 +61,10 @@ class GrowattMap:
             v1 = value
             v2 = self.__fetch_raw(definition["double"])
             value = float((v1 << 16) + v2)
+            if Debug:
+                print("Double: (%s<<16)+%s = %s" %(v1, v2, value))
             #decoder = BinaryPayloadDecoder.fromRegisters([v1,v2], byteorder=Endian.Big, wordorder=Endian.Big)
             #value=decoder.decode_32bit_int()
-
-        if "or" in def_keys:
-            orvalue = self.__fetch_raw(definition["or"])
-            if Debug:
-                print("Or: %s or %s" %(value, orvalue))
-            if value == 0:
-                value=orvalue
 
         if "add" in def_keys:
             add = self.__fetch_raw(definition["add"])
