@@ -62,7 +62,7 @@ class GrowattMap:
             v2 = self.__fetch_raw(definition["double"])
             value = float((v1 << 16) + v2)
             if Debug:
-                print("Double: (%s<<16)+%s = %s" %(v1, v2, value))
+                print("Double: float((%s << 16) + %s) = %s" %(v1, v2, value))
             #decoder = BinaryPayloadDecoder.fromRegisters([v1,v2], byteorder=Endian.Big, wordorder=Endian.Big)
             #value=decoder.decode_32bit_int()
 
