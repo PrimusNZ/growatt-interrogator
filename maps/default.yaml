@@ -80,7 +80,7 @@ registers:
       unit_of_measurement: V
       type: sensor
     3:
-      or: 4
+      double: 4
       name: PV Power
       data_type: int
       math: a*0.1
@@ -97,7 +97,7 @@ registers:
       type: sensor
       
     9:
-      or: 10
+      double: 10
       name: Output Power
       data_type: int
       math: a*0.1
@@ -112,7 +112,7 @@ registers:
       type: sensor
 
     13:
-      or: 14
+      double: 14
       name: AC Charge Power
       data_type: int
       math: a*0.1
@@ -209,7 +209,7 @@ registers:
 
     36:
       name: AC Power
-      or: 37
+      double: 37
       data_type: int
       math: a*0.1
       device_class: energy
@@ -235,7 +235,7 @@ registers:
       icon: mdi:information
 
     50:
-      or: 51
+      double: 51
       name: PV History Total
       data_type: float
       math: a*0.1
@@ -245,7 +245,7 @@ registers:
       type: sensor
 
     58:
-      or: 59
+      double: 59
       name: Charge History Total
       data_type: float
       math: a*0.1
@@ -256,7 +256,7 @@ registers:
       type: sensor
 
     60:
-      or: 61
+      double: 61
       name: Battery Output Today
       data_type: float
       math: a*0.1
@@ -266,7 +266,7 @@ registers:
       type: sensor
 
     62:
-      or: 63
+      double: 63
       name: Battery History Total
       data_type: float
       math: a*0.1
@@ -276,7 +276,7 @@ registers:
       type: sensor
 
     66:
-      or: 67
+      double: 67
       name: AC History Total
       data_type: float
       math: a*0.1
@@ -295,7 +295,7 @@ registers:
       type: sensor
 
     73:
-      or: 74
+      double: 74
       name: Discharge Power
       data_type: int
       math: a*0.1
@@ -304,7 +304,7 @@ registers:
       type: sensor
 
     77:
-      signed: 78
+      double: 78
       name: Battery Power
       data_type: int
       math: a*0.1
