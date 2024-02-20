@@ -98,7 +98,7 @@ registers:
       
     9:
       or: 10
-      name: Consumption
+      name: Output Power
       data_type: int
       math: a*0.1
       device_class: power
@@ -236,7 +236,7 @@ registers:
 
     50:
       or: 51
-      name: Solar History Total
+      name: PV History Total
       data_type: float
       math: a*0.1
       device_class: energy
@@ -257,7 +257,7 @@ registers:
 
     60:
       or: 61
-      name: Battery Consumption Today
+      name: Battery Output Today
       data_type: float
       math: a*0.1
       round: 0
@@ -383,22 +383,23 @@ transform:
     unit_of_measurement: A
     type: sensor      
 
-  Consumption Total:
-    math: a+b
+  Output Total:
+    math: a+b+c
     data_type: float
     sources:
       - AC History Total
       - Battery History Total
+      - PV History Total
     device_class: energy
     unit_of_measurement: kWh
     state_class: total_increasing
     type: sensor
 
-  Consumption Combined:
+  Output Combined:
     math: a+b
     data_type: int
     sources:
-      - Consumption
+      - Output Power
       - Charge Power
     device_class: power
     unit_of_measurement: W
