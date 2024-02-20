@@ -51,4 +51,5 @@ services:
       - DEBUG_REGISTERS=
       - VERBOSE=false
       - DISCOVERY=true
+      - TIME_SYNC=True
 ```

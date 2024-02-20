@@ -31,6 +31,28 @@ registers:
         2: Generator
       type: sensor
       icon: mdi:engine
+    20:
+      name: Overload Restart
+      states:
+        0: Yes
+        1: No
+        2: Switch to Grid
+      type: select
+      icon: mdi:restart
+    21:
+      name: Over Temperature Restart
+      states:
+        0: Yes
+        1: No
+      type: select
+      icon: mdi:restart
+    22:
+      name: Buzzer
+      states:
+        0: Off
+        1: On
+      type: select
+      icon: mdi:home-sound-in
     34:
       name: Max Charge Current
       data_type: int
