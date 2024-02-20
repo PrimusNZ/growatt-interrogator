@@ -99,6 +99,17 @@ def send_mqtt(client):
     for key, value in sorted(data.items()):
         publish(client, key, value)
 
+def sync_time():
+    # Sync the time of the inverter to the system time
+    if Verbose:
+        print("Syncing Inverter time to system time")
+    set_register(45, int(strftime("%Y")))
+    set_register(46, int(strftime("%m")))
+    set_register(47, int(strftime("%d")))
+    set_register(48, int(strftime("%H")))
+    set_register(49, int(strftime("%M")))
+    set_register(50, int(strftime("%S")))
+
 def pv_upload():
     data = inverter_read()
 
@@ -173,20 +184,18 @@ def run():
     print("Verbose: %s" %(Verbose))
     print("Using serial port: %s" %(InverterPort))
     print("Publishing states to '%s/'" %(MqttStub))
+    print("Starting Background Scheduler")
+    scheduler = BackgroundScheduler()
+
     if TimeSync.lower() == 'true':
-        print("Syncing Inverter time to system time")
-        set_register(45, int(strftime("%Y")))
-        set_register(46, int(strftime("%m")))
-        set_register(47, int(strftime("%d")))
-        set_register(48, int(strftime("%H")))
-        set_register(49, int(strftime("%M")))
-        set_register(50, int(strftime("%S")))
+        print("Enabling System to Inverter time sync (Every 5 minutes)")
+        sync_time()
+        scheduler.add_job(sync_time, 'cron', minute='*/5')
+
 
     print("Connecting to MQTT")
     client = connect_mqtt()
 
-    print("Starting Background Scheduler")
-    scheduler = BackgroundScheduler()
     scheduler.add_job(send_mqtt, 'interval', seconds=1, args=[client])
     if PVOEnabled.lower() == 'true':
         scheduler.add_job(pv_upload, 'cron', minute='*/5')
