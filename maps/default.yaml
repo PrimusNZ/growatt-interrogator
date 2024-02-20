@@ -80,7 +80,7 @@ registers:
       unit_of_measurement: V
       type: sensor
     3:
-      double: 4
+      or: 4
       name: PV Power
       data_type: int
       math: a*0.1
@@ -97,8 +97,8 @@ registers:
       type: sensor
       
     9:
-      double: 10
-      name: Output Power
+      or: 10
+      name: Consumption
       data_type: int
       math: a*0.1
       device_class: power
@@ -112,7 +112,7 @@ registers:
       type: sensor
 
     13:
-      double: 14
+      or: 14
       name: AC Charge Power
       data_type: int
       math: a*0.1
@@ -209,7 +209,7 @@ registers:
 
     36:
       name: AC Power
-      double: 37
+      or: 37
       data_type: int
       math: a*0.1
       device_class: energy
@@ -235,8 +235,8 @@ registers:
       icon: mdi:information
 
     50:
-      double: 51
-      name: PV History Total
+      or: 51
+      name: Solar History Total
       data_type: float
       math: a*0.1
       device_class: energy
@@ -245,7 +245,7 @@ registers:
       type: sensor
 
     58:
-      double: 59
+      or: 59
       name: Charge History Total
       data_type: float
       math: a*0.1
@@ -256,8 +256,8 @@ registers:
       type: sensor
 
     60:
-      double: 61
-      name: Battery Output Today
+      or: 61
+      name: Battery Consumption Today
       data_type: float
       math: a*0.1
       round: 0
@@ -266,7 +266,7 @@ registers:
       type: sensor
 
     62:
-      double: 63
+      or: 63
       name: Battery History Total
       data_type: float
       math: a*0.1
@@ -276,7 +276,7 @@ registers:
       type: sensor
 
     66:
-      double: 67
+      or: 67
       name: AC History Total
       data_type: float
       math: a*0.1
@@ -295,7 +295,7 @@ registers:
       type: sensor
 
     73:
-      double: 74
+      or: 74
       name: Discharge Power
       data_type: int
       math: a*0.1
@@ -304,7 +304,7 @@ registers:
       type: sensor
 
     77:
-      double: 78
+      signed: 78
       name: Battery Power
       data_type: int
       math: a*0.1
@@ -383,23 +383,22 @@ transform:
     unit_of_measurement: A
     type: sensor      
 
-  Output Total:
-    math: a+b+c
+  Consumption Total:
+    math: a+b
     data_type: float
     sources:
       - AC History Total
       - Battery History Total
-      - PV History Total
     device_class: energy
     unit_of_measurement: kWh
     state_class: total_increasing
     type: sensor
 
-  Output Combined:
+  Consumption Combined:
     math: a+b
     data_type: int
     sources:
-      - Output Power
+      - Consumption
       - Charge Power
     device_class: power
     unit_of_measurement: W
