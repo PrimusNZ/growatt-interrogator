@@ -23,6 +23,9 @@ MqttPort = int(env.get('MQTT_PORT'))
 MqttUser = env.get('MQTT_USER')
 MqttPass = env.get('MQTT_PASSWORD')
 
+# Sync Time on Start-up?
+TimeSync = env.get('TIME_SYNC')
+
 # PVOutput Configurations
 PVOEnabled = env.get('PVO_ENABLED')
 SystemID = env.get('PVO_SYSTEMID')
@@ -170,15 +173,25 @@ def run():
     print("Verbose: %s" %(Verbose))
     print("Using serial port: %s" %(InverterPort))
     print("Publishing states to '%s/'" %(MqttStub))
+    if TimeSync.lower() == 'true':
+        print("Syncing Inverter time to system time")
+        set_register(45, int(strftime("%Y")))
+        set_register(46, int(strftime("%m")))
+        set_register(47, int(strftime("%d")))
+        set_register(48, int(strftime("%H")))
+        set_register(49, int(strftime("%M")))
+        set_register(50, int(strftime("%S")))
+
+    print("Connecting to MQTT")
     client = connect_mqtt()
 
+    print("Starting Background Scheduler")
     scheduler = BackgroundScheduler()
     scheduler.add_job(send_mqtt, 'interval', seconds=1, args=[client])
     if PVOEnabled.lower() == 'true':
         scheduler.add_job(pv_upload, 'cron', minute='*/5')
         print("Scheduled uploads to PVOutput every 5m are enabled")
     scheduler.start()
-
     client.loop_forever()
 
 def set_register(register,value):
