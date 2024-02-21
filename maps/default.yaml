@@ -375,6 +375,24 @@ transform:
     type: binary_sensor
     icon: mdi:transmission-tower
   
+  Battery Charge Power:
+    data_type: int
+    sources:
+      - Battery Power
+    device_class: power
+    unit_of_measurement: W
+    type: sensor
+    valid_range: negative
+
+  Battery Discharge Power:
+    data_type: int
+    sources:
+      - Battery Power
+    device_class: power
+    unit_of_measurement: W
+    type: sensor
+    valid_range: positive
+
   Charge Power:
     math: a+b
     data_type: int
@@ -422,7 +440,7 @@ transform:
     data_type: int
     sources:
       - Output Power
-      - Charge Power
+      - Battery Charge Power
     device_class: power
     unit_of_measurement: W
     type: sensor

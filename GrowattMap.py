@@ -110,7 +110,7 @@ class GrowattMap:
             if Debug:
                 print("Round: %s" %(value))
             value=round(value,int(definition["round"]))
-
+        
         return {key_name: value}
 
     def __calculate_transform_key(self, key, transform):
@@ -159,6 +159,15 @@ class GrowattMap:
 
         if "round" in def_keys:
             value=round(value,int(transform["round"]))
+
+        if "valid_range" in def_keys:
+            read_value=value
+            value=0
+            valid_range = transform["valid_range"]
+            if valid_range=="negative" and read_value < 0:
+                value = abs(read_value)
+            if valid_range=="positive" and read_value > 0:
+                value = abs(read_value)
 
         return {key_name: value}
 
